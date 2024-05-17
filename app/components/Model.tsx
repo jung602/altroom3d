@@ -60,10 +60,11 @@ export function Model({ mouse, ...props }: ModelProps) {
   const { nodes, materials } = useGLTF('./medias/r1.gltf') as GLTFResult;
   const { viewport } = useThree();
   const multiplier = 0.1;
+  const scale = window.innerWidth <= 768 ? viewport.width / 1.5 : viewport.width / 3.5;
 
   return (
     <Float>
-      <group {...props} dispose={null} ref={mesh} scale={viewport.width / 3.5} rotation={[Math.PI / 2, 0, .5]}>
+      <group {...props} dispose={null} ref={mesh} scale={scale} rotation={[Math.PI / 2, 0, .5]}>
         <Mesh node={nodes.r1} material={materials.Hard_Shiny_Plastic_Red_1} mouse={mouse} multiplier={multiplier}>
           <mesh castShadow receiveShadow geometry={nodes.Object_10.geometry} material={materials.Metal_Polished_Grey_1} />
           <mesh castShadow receiveShadow geometry={nodes.Object_12.geometry} material={materials.Glass_Solid_Black_1} position={[0, 0.001, 0]} />

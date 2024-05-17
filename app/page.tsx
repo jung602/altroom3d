@@ -8,7 +8,7 @@ const Scene = dynamic(() => import('./components/Scene'),{
 
 export default function Home() {
   return (
-    <main className="relative h-screen" style={{cursor:"pointer"}}>
+    <main className="relative h-[100dvh]" style={{cursor:"pointer"}}>
       <Scene />
     </main>
   );
