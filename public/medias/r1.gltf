@@ -6,7 +6,6 @@
 	"extensionsUsed":[
 		"KHR_materials_clearcoat",
 		"KHR_materials_transmission",
-		"KHR_materials_ior",
 		"EXT_texture_webp",
 		"KHR_materials_emissive_strength"
 	],
@@ -281,9 +280,6 @@
 			"extensions":{
 				"KHR_materials_transmission":{
 					"transmissionFactor":0.5944849848747253
-				},
-				"KHR_materials_ior":{
-					"ior":0.05000000074505806
 				}
 			},
 			"name":"Glass_Solid_White",
@@ -292,10 +288,10 @@
 					1,
 					1,
 					1,
-					0.20000000298023224
+					0.4000000059604645
 				],
 				"metallicFactor":0,
-				"roughnessFactor":0.10000000149011612
+				"roughnessFactor":0.20000000298023224
 			}
 		},
 		{
@@ -310,7 +306,7 @@
 			},
 			"extensions":{
 				"KHR_materials_emissive_strength":{
-					"emissiveStrength":2
+					"emissiveStrength":3
 				}
 			},
 			"name":"Emissive_Neutral_1",
