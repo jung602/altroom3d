@@ -34,7 +34,7 @@ export default function Scene() {
 
     return(
         <Canvas orthographic camera={{position: [0,0,200], zoom: 5}} style={{backgroundColor: "black"}}>
-            <directionalLight intensity={3} position={[-1, 5, 5]}/>
+            <directionalLight intensity={2} position={[-.5, 1, 1]}/>
             <Environment preset='city' />
             <Model mouse={smoothMouse} />
         </Canvas>
