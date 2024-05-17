@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { Float } from '@react-three/drei';
-import { GroupProps, useFrame, useThree } from '@react-three/fiber';
+import { GroupProps, useThree } from '@react-three/fiber';
 import { GLTF, GLTFLoader } from 'three-stdlib';
 import * as THREE from 'three';
-import { cos } from 'three/examples/jsm/nodes/Nodes.js';
-
+import { MotionValue, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion-3d';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -48,24 +48,23 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Model(props: GroupProps) {
+interface ModelProps extends GroupProps {
+  mouse: {
+    x: MotionValue<number>;
+    y: MotionValue<number>;
+  };
+}
 
+export function Model({ mouse, ...props }: ModelProps) {
   const mesh = useRef<THREE.Group>(null);
   const { nodes, materials } = useGLTF('./medias/r1.gltf') as GLTFResult;
   const { viewport } = useThree();
+  const multiplier = 0.1;
 
-  /** 
-  useFrame(() => {
-    if (mesh.current) { // null 체크
-      mesh.current.rotation.x += 0.01;
-      mesh.current.rotation.y += 0.01;
-    }
-  }); */
-  
   return (
     <Float>
-      <group {...props} dispose={null} ref={mesh} scale={viewport.width/3.5}>
-        <mesh castShadow receiveShadow geometry={nodes.r1.geometry} material={materials.Hard_Shiny_Plastic_Red_1}>
+      <group {...props} dispose={null} ref={mesh} scale={viewport.width / 3.5} rotation={[Math.PI / 2, 0, .5]}>
+        <Mesh node={nodes.r1} material={materials.Hard_Shiny_Plastic_Red_1} mouse={mouse} multiplier={multiplier}>
           <mesh castShadow receiveShadow geometry={nodes.Object_10.geometry} material={materials.Metal_Polished_Grey_1} />
           <mesh castShadow receiveShadow geometry={nodes.Object_12.geometry} material={materials.Glass_Solid_Black_1} position={[0, 0.001, 0]} />
           <mesh castShadow receiveShadow geometry={nodes.Object_14.geometry} material={materials.Hard_Shiny_Plastic_Red_1} />
@@ -74,10 +73,10 @@ export function Model(props: GroupProps) {
           <mesh castShadow receiveShadow geometry={nodes.Object_20.geometry} material={materials.DefaultPlaster} />
           <mesh castShadow receiveShadow geometry={nodes.Object_24.geometry} material={materials.DefaultPlastic_1} />
           <mesh castShadow receiveShadow geometry={nodes.Object_26.geometry} material={materials.DefaultPlastic_1} />
-          <mesh castShadow receiveShadow geometry={nodes.Object_28.geometry} material={materials.Glass_Basic_White_4} />
-          <mesh castShadow receiveShadow geometry={nodes.Object_30.geometry} material={materials.Glass_Basic_White_4} />
+          <mesh castShadow receiveShadow geometry={nodes.Object_28.geometry} material={materials.Glass_Solid_White} />
+          <mesh castShadow receiveShadow geometry={nodes.Object_30.geometry} material={materials.Glass_Solid_White} />
           <mesh castShadow receiveShadow geometry={nodes.Object_32.geometry} material={materials.Emissive_Neutral_1} />
-          <mesh castShadow receiveShadow geometry={nodes.Object_35.geometry} material={materials.Glass_Basic_White_4} />
+          <mesh castShadow receiveShadow geometry={nodes.Object_35.geometry} material={materials.Glass_Solid_White} />
           <mesh castShadow receiveShadow geometry={nodes.Object_38.geometry} material={materials.usbusb_metal} />
           <mesh castShadow receiveShadow geometry={nodes.Object_40.geometry} material={materials.usbusb_metal} />
           <mesh castShadow receiveShadow geometry={nodes.Object_42.geometry} material={materials.usbusb_metal} />
@@ -98,8 +97,56 @@ export function Model(props: GroupProps) {
           <mesh castShadow receiveShadow geometry={nodes.Object_72.geometry} material={materials.usbusb_plastic} />
           <mesh castShadow receiveShadow geometry={nodes.Object_75.geometry} material={materials.Hard_Shiny_Plastic_Red_1} />
           <mesh castShadow receiveShadow geometry={nodes.Object_8.geometry} material={materials.Hard_Shiny_Plastic_Red_1} />
-        </mesh>
+        </Mesh>
       </group>
     </Float>
   );
 }
+
+interface MeshProps {
+  node: THREE.Mesh;
+  material: THREE.Material;
+  mouse: {
+    x: MotionValue<number>;
+    y: MotionValue<number>;
+  };
+  position?: [number, number, number];
+  multiplier?: number;
+  children?: React.ReactNode;
+}
+
+const Mesh: React.FC<MeshProps> = ({ node, material, mouse, position, multiplier = 0.1, children }) => {
+  const a = multiplier / 2;
+  const rotationX = useTransform(mouse.x, [0, 1], [node.rotation.x - a, node.rotation.x + a]);
+  const rotationY = useTransform(mouse.y, [0, 1], [node.rotation.y - a, node.rotation.y + a]);
+  const positionX = useTransform(mouse.x, [0, 1], [
+    position ? position[0] - multiplier * 2 : node.position.x - multiplier * 2,
+    position ? position[0] + multiplier * 2 : node.position.x + multiplier * 2
+  ]);
+  const positionY = useTransform(mouse.y, [0, 1], [
+    position ? position[1] + multiplier * 2 : node.position.y + multiplier * 2,
+    position ? position[1] - multiplier * 2 : node.position.y - multiplier * 2
+  ]);
+
+  return (
+    <Float>
+      <motion.group
+        castShadow
+        receiveShadow
+        position={position}
+        rotation={node.rotation}
+        scale={node.scale}
+        rotation-x={rotationX}
+        rotation-y={rotationY}
+        position-x={positionX}
+        position-y={positionY}
+      >
+        <mesh
+          geometry={node.geometry}
+          material={material}
+        />
+        {children}
+      </motion.group>
+    </Float>
+  );
+};
