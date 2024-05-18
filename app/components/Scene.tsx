@@ -1,10 +1,16 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Model } from './Model';
 import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
+import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { BlurPass, Resizer, KernelSize, Resolution } from 'postprocessing'
 import { useMotionValue, useSpring } from "framer-motion"
+
+
+import { R1 } from './R1';
+import { Omeko } from './Omeko';
+import { Altroom } from './Altroom';
 
 export default function Scene() {
 
@@ -32,11 +38,23 @@ export default function Scene() {
         return () => window.removeEventListener("mousemove", manageMouse)
       }, [])
 
-    return(
-        <Canvas orthographic camera={{position: [0,0,200], zoom: 5}} style={{backgroundColor: "black"}}>
+
+      /** 
             <directionalLight intensity={2} position={[-.5, 1, 1]}/>
-            <Environment preset='city' />
-            <Model mouse={smoothMouse} />
+            <R1 mouse={smoothMouse} />    
+      */
+    return(
+        <Canvas orthographic camera={{position: [0,0,200], zoom: 5}} className="-z-0">
+            <EffectComposer>
+              <Bloom
+                intensity={.3} // The bloom intensity.
+                luminanceThreshold={.5} // luminance threshold. Raise this value to mask out darker elements in the scene.
+                mipmapBlur
+              />
+            </EffectComposer>
+            <Altroom/>
+            <Environment environmentIntensity={1.2} preset='warehouse'/>
+
         </Canvas>
     );
 }
