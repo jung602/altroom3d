@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className="relative h-[100dvh]" style={{cursor:"pointer"}}>
       <Scene />
-      
+      <Text />
     </main>
   );
 }
