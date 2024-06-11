@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, Stats, useHelper } from '@react-three/drei';
-import { Bloom, EffectComposer } from '@react-three/postprocessing';
+import { SSAO, Bloom } from '@react-three/postprocessing';
 import { BlurPass, Resizer, KernelSize, Resolution } from 'postprocessing';
-import { useMotionValue, useSpring } from 'framer-motion';
-import { useFrame, useThree } from '@react-three/fiber';
+import { EffectComposer as BaseEffectComposer } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
 import { Background } from './background';
@@ -15,6 +14,17 @@ import { Etc } from './etc';
 import { Desk } from './desk';
 
 import { useControls } from 'leva';  // Assuming you are using Leva for control
+
+
+interface ExtendedEffectComposerProps extends React.ComponentProps<typeof BaseEffectComposer> {
+  smaa?: boolean;
+}
+
+const EffectComposer: React.FC<ExtendedEffectComposerProps> = (props) => {
+  // Here you can handle the smaa prop as needed, possibly passing it to a custom effect or shader
+  return <BaseEffectComposer {...props} />;
+};
+
 
 function Lights() {
   const ambientRef = useRef<THREE.AmbientLight>(null);
@@ -163,6 +173,7 @@ function Lights() {
   );
 }
 
+
 export default function Scene() {
   return (
     <Canvas orthographic camera={{ position: [45, 45, 45], zoom: 200 }} className="-z-0">
@@ -177,6 +188,22 @@ export default function Scene() {
       <axesHelper args={[5]} />
       <gridHelper />
       <Stats />
+
+      <Suspense fallback={null}>
+          <EffectComposer smaa={true as any}>
+            <Bloom 
+                intensity={0.1} // The bloom intensity.
+                blurPass={undefined} // A blur pass.
+                kernelSize={KernelSize.LARGE} // blur kernel size
+                luminanceThreshold={0.9} // luminance threshold. Raise this value to mask out darker elements in the scene.
+                luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
+                mipmapBlur={false} // Enables or disables mipmap blur.
+                resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
+                resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
+            />
+          </EffectComposer>
+      </Suspense>
+
     </Canvas>
   );
 }
