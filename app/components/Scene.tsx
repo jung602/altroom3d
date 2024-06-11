@@ -3,8 +3,8 @@
 import React, { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls, Stats, useHelper } from '@react-three/drei';
-import { SSAO, Bloom } from '@react-three/postprocessing';
-import { BlurPass, Resizer, KernelSize, Resolution } from 'postprocessing';
+import { SSAO, ToneMapping, Bloom } from '@react-three/postprocessing';
+import { BlurPass, Resizer, BlendFunction, KernelSize, Resolution } from 'postprocessing';
 import { EffectComposer as BaseEffectComposer } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
@@ -201,6 +201,16 @@ export default function Scene() {
                 resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
                 resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
             />
+              <ToneMapping
+                blendFunction={BlendFunction.NORMAL} // blend mode
+                adaptive={true} // toggle adaptive luminance map usage
+                resolution={256} // texture resolution of the luminance map
+                middleGrey={1.0} // middle grey factor
+                maxLuminance={20.0} // maximum luminance
+                averageLuminance={1.0} // average luminance
+                adaptationRate={1.0} // luminance adaptation rate
+              />
+              
           </EffectComposer>
       </Suspense>
 
