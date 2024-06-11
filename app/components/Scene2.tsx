@@ -1,0 +1,99 @@
+'use client';
+
+import React, { Suspense, useRef } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls, Stats, useHelper } from '@react-three/drei';
+import { SSAO, ToneMapping, Bloom } from '@react-three/postprocessing';
+import { BlurPass, Resizer, BlendFunction, KernelSize, Resolution } from 'postprocessing';
+import { EffectComposer as BaseEffectComposer } from '@react-three/postprocessing';
+import * as THREE from 'three';
+
+import { Background } from './background';
+import { Bed } from './bed';
+import { Etc } from './etc';
+import { Desk } from './desk';
+
+import { useControls } from 'leva';  // Assuming you are using Leva for control
+import { DirectionalLight } from 'three';
+
+
+interface ExtendedEffectComposerProps extends React.ComponentProps<typeof BaseEffectComposer> {
+  smaa?: boolean;
+}
+
+const EffectComposer: React.FC<ExtendedEffectComposerProps> = (props) => {
+  // Here you can handle the smaa prop as needed, possibly passing it to a custom effect or shader
+  return <BaseEffectComposer {...props} />;
+};
+
+
+
+export default function Scene2() {
+  return (
+    <Canvas orthographic camera={{ position: [45, 45, 45], zoom: 200 }} className="-z-0">
+
+      <pointLight 
+      position={[-1, 0.7, -0.5]} 
+      intensity={1} 
+      color={'#c47d00'}
+      />
+
+      <pointLight 
+      position={[-0.7, 1.1, 0.8]} 
+      intensity={0.5} 
+      color={'#ffffff'}
+      />
+
+      <directionalLight
+      position={[0, 1, 5]} 
+      intensity={0.6} 
+      color={'#ffffff'}
+      />
+
+      <directionalLight
+      position={[3, 1, 0]} 
+      intensity={1} 
+      color={'#ffffff'}
+      />
+
+      <spotLight
+      position={[0, 5, -5]} 
+      intensity={20} 
+      angle={0.39}
+      />      
+
+      <Background />
+      <Bed />
+      <Etc />
+      <Desk />
+
+      <OrbitControls />
+
+      <Suspense fallback={null}>
+          <EffectComposer smaa={true as any}>
+            <Bloom 
+                intensity={0.03} // The bloom intensity.
+                blurPass={undefined} // A blur pass.
+                kernelSize={KernelSize.LARGE} // blur kernel size
+                luminanceThreshold={0.9} // luminance threshold. Raise this value to mask out darker elements in the scene.
+                luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
+                mipmapBlur={false} // Enables or disables mipmap blur.
+                resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
+                resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
+            />
+              <ToneMapping
+                blendFunction={BlendFunction.NORMAL} // blend mode
+                adaptive={true} // toggle adaptive luminance map usage
+                resolution={256} // texture resolution of the luminance map
+                middleGrey={1.0} // middle grey factor
+                maxLuminance={20.0} // maximum luminance
+                averageLuminance={1.0} // average luminance
+                adaptationRate={1.0} // luminance adaptation rate
+              />
+              
+          </EffectComposer>
+      </Suspense>
+
+    </Canvas>
+  );
+}
