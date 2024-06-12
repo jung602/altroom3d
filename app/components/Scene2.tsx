@@ -32,43 +32,6 @@ export default function Scene2() {
   return (
     <Canvas orthographic camera={{ position: [45, 30, 30], zoom: 100 }} className="-z-0">
 
-      <pointLight 
-      position={[-1, 0.7, -0.5]} 
-      intensity={1} 
-      color={'#c47d00'}
-      />
-
-      <pointLight 
-      position={[-0.7, 1.1, 0.8]} 
-      intensity={0.5} 
-      color={'#ffffff'}
-      />
-
-      <directionalLight
-      position={[0, 1, 5]} 
-      intensity={0.3} 
-      color={'#ffffff'}
-      />
-
-      <directionalLight
-      position={[3, 1, 0]} 
-      intensity={.6} 
-      color={'#ffffff'}
-      />
-
-
-    <directionalLight
-      position={[0, 6, -5]} 
-      intensity={2} 
-      color={'#ffffff'}
-      />
-
-      <spotLight
-      position={[0, 5, -5]} 
-      intensity={20} 
-      angle={0.39}
-      />      
-
       <Background />
       <Bed />
       <Etc />
