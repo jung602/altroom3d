@@ -74,31 +74,11 @@ export default function Scene2() {
       <Etc />
       <Desk />
 
-
-      <Suspense fallback={null}>
-          <EffectComposer smaa={true as any}>
+      <EffectComposer smaa={true as any}>
             <Bloom 
                 intensity={0.03} // The bloom intensity.
-                blurPass={undefined} // A blur pass.
-                kernelSize={KernelSize.LARGE} // blur kernel size
-                luminanceThreshold={0.9} // luminance threshold. Raise this value to mask out darker elements in the scene.
-                luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
-                mipmapBlur={false} // Enables or disables mipmap blur.
-                resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
-                resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
-            />
-              <ToneMapping
-                blendFunction={BlendFunction.NORMAL} // blend mode
-                adaptive={true} // toggle adaptive luminance map usage
-                resolution={256} // texture resolution of the luminance map
-                middleGrey={1.0} // middle grey factor
-                maxLuminance={20.0} // maximum luminance
-                averageLuminance={1.0} // average luminance
-                adaptationRate={1.0} // luminance adaptation rate
-              />
-              
-          </EffectComposer>
-      </Suspense>
+            />      
+      </EffectComposer>
 
     </Canvas>
   );
