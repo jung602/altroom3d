@@ -189,8 +189,9 @@ export default function Scene() {
       <gridHelper />
       <Stats />
 
-      <Suspense fallback={null}>
+      <Suspense fallback={"loading..."}>
           <EffectComposer smaa={true as any}>
+
             <Bloom 
                 intensity={0.1} // The bloom intensity.
                 blurPass={undefined} // A blur pass.
@@ -201,15 +202,6 @@ export default function Scene() {
                 resolutionX={Resolution.AUTO_SIZE} // The horizontal resolution.
                 resolutionY={Resolution.AUTO_SIZE} // The vertical resolution.
             />
-              <ToneMapping
-                blendFunction={BlendFunction.NORMAL} // blend mode
-                adaptive={true} // toggle adaptive luminance map usage
-                resolution={256} // texture resolution of the luminance map
-                middleGrey={1.0} // middle grey factor
-                maxLuminance={20.0} // maximum luminance
-                averageLuminance={1.0} // average luminance
-                adaptationRate={1.0} // luminance adaptation rate
-              />
               
           </EffectComposer>
       </Suspense>

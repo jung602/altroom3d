@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Text from "./components/Text"
 
-const Scene = dynamic(() => import('./components/Scene2'),{
+const Scene = dynamic(() => import('./components/Scene'),{
   ssr: false
 })
 
