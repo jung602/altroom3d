@@ -35,7 +35,6 @@ export default function Scene2() {
 
     <ambientLight />
 
-      <Bed />
       <Desk />
 
       <EffectComposer smaa={true as any}>
