@@ -30,7 +30,7 @@ const EffectComposer: React.FC<ExtendedEffectComposerProps> = (props) => {
 
 export default function Scene2() {
   return (
-    <Canvas orthographic camera={{ position: [45, 45, 45], zoom: 200 }} className="-z-0">
+    <Canvas orthographic camera={{ position: [45, 30, 30], zoom: 100 }} className="-z-0">
 
       <pointLight 
       position={[-1, 0.7, -0.5]} 
@@ -59,8 +59,8 @@ export default function Scene2() {
 
     <directionalLight
       position={[0, 6, -5]} 
-      intensity={3} 
-      color={'#7968e7'}
+      intensity={2} 
+      color={'#ffffff'}
       />
 
       <spotLight
@@ -74,7 +74,6 @@ export default function Scene2() {
       <Etc />
       <Desk />
 
-      <OrbitControls />
 
       <Suspense fallback={null}>
           <EffectComposer smaa={true as any}>
