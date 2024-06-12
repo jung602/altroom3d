@@ -32,6 +32,10 @@ export default function Scene2() {
   return (
     <Canvas orthographic camera={{ position: [45, 30, 30], zoom: 100 }} className="-z-0">
 
+
+    <ambientLight />
+
+      
       <Background />
       <Bed />
       <Etc />
