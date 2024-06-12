@@ -46,14 +46,21 @@ export default function Scene2() {
 
       <directionalLight
       position={[0, 1, 5]} 
-      intensity={0.6} 
+      intensity={0.3} 
       color={'#ffffff'}
       />
 
       <directionalLight
       position={[3, 1, 0]} 
-      intensity={1} 
+      intensity={.6} 
       color={'#ffffff'}
+      />
+
+
+    <directionalLight
+      position={[0, 6, -5]} 
+      intensity={3} 
+      color={'#7968e7'}
       />
 
       <spotLight
