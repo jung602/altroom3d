@@ -11,22 +11,13 @@ import { motion } from 'framer-motion-3d';
 
 type GLTFResult = GLTF & {
   nodes: {
-    Trackpad: THREE.Mesh
-    tablellight: THREE.Mesh
-    chair: THREE.Mesh
-    caffet: THREE.Mesh
-    Keyboard: THREE.Mesh
-    iMac_Silver: THREE.Mesh
-    vitra: THREE.Mesh
-    trashcan: THREE.Mesh
-    desk: THREE.Mesh
-    calender: THREE.Mesh
-    scisors: THREE.Mesh
-    pencil: THREE.Mesh
-    Circle001: THREE.Mesh
-    Circle001_1: THREE.Mesh
-    Circle001_2: THREE.Mesh
-    FbxMesh004: THREE.Mesh
+    Plane012: THREE.Mesh
+    Plane012_1: THREE.Mesh
+    Plane012_2: THREE.Mesh
+    Plane012_3: THREE.Mesh
+    Plane012_4: THREE.Mesh
+    Plane012_5: THREE.Mesh
+    Plane012_6: THREE.Mesh
   }
   materials: {
     [key: string]: THREE.Material;
@@ -34,92 +25,53 @@ type GLTFResult = GLTF & {
 }
 
 export function Desk(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('./roomset/desk.gltf') as GLTFResult
+  const { nodes, materials } = useGLTF('./roomset/desk.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Trackpad.geometry}
-        material={materials.TrackPad}
+        geometry={nodes.Plane012.geometry}
+        material={materials.Trolli_Baked}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.tablellight.geometry}
-        material={materials['head-tolomeo']}
-      />
-      <mesh castShadow receiveShadow geometry={nodes.chair.geometry} material={materials.chair} />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.caffet.geometry}
-        material={materials.carffet}
+        geometry={nodes.Plane012_1.geometry}
+        material={materials['Desk_Baked.009']}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Keyboard.geometry}
-        material={materials.Keyboard}
+        geometry={nodes.Plane012_2.geometry}
+        material={materials['Desk_Baked.008']}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.iMac_Silver.geometry}
-        material={materials.imac}
-      />
-      <mesh castShadow receiveShadow geometry={nodes.vitra.geometry} material={materials.toolbox} />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.trashcan.geometry}
-        material={materials.blakc}
+        geometry={nodes.Plane012_3.geometry}
+        material={materials.acc_Baked}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.desk.geometry}
-        material={materials.BenchAndTable}
+        geometry={nodes.Plane012_4.geometry}
+        material={materials.book001_Baked}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.calender.geometry}
-        material={materials.calender}
+        geometry={nodes.Plane012_5.geometry}
+        material={materials['Cube.001_Baked_Baked.001']}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.scisors.geometry}
-        material={materials['metal.002']}
-      />
-      <mesh castShadow receiveShadow geometry={nodes.pencil.geometry} material={materials.pen} />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.FbxMesh004.geometry}
-        material={materials.Stool}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Circle001.geometry}
-        material={materials['Material.010']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Circle001_1.geometry}
-        material={materials['Material.015']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Circle001_2.geometry}
-        material={materials['Material.018']}
+        geometry={nodes.Plane012_6.geometry}
+        material={materials.Keyboard_Baked_Baked}
       />
     </group>
   )
 }
 
-useGLTF.preload('/desk.gltf')
+useGLTF.preload('/desk.glb')
