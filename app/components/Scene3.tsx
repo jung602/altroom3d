@@ -11,6 +11,8 @@ import * as THREE from 'three';
 import { Background } from './background';
 import { Bed } from './bed';
 import { Desk } from './desk';
+import { Etc } from './etc';
+import { Etc2 } from './etc2';
 
 import { useControls } from 'leva';  // Assuming you are using Leva for control
 
@@ -28,14 +30,15 @@ const EffectComposer: React.FC<ExtendedEffectComposerProps> = (props) => {
 
 export default function Scene3() {
   return (
-    <Canvas orthographic camera={{ position: [45, 45, 45], zoom: 200 }} className="-z-0">
-
-      <Background />
-      <Bed />
-      <Desk />
-
-      <OrbitControls />
-
-    </Canvas>
+<Canvas orthographic camera={{ position: [90, 90, 45], zoom: 200 }} className="-z-0">
+  <group position={[0, -1.5, 0]}>
+    <Background />
+    <Bed />
+    <Desk />
+    <Etc />
+    <Etc2 />
+  </group>
+  <OrbitControls />
+</Canvas>
   );
 }

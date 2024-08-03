@@ -10,19 +10,8 @@ import { motion } from 'framer-motion-3d';
 
 type GLTFResult = GLTF & {
   nodes: {
-    btrolli: THREE.Mesh
-    imagetostl_mesh3002: THREE.Mesh
-    imagetostl_mesh3001: THREE.Mesh
-    car001: THREE.Mesh
-    shelve: THREE.Mesh
-    book001: THREE.Mesh
-    haylight: THREE.Mesh
-    cup: THREE.Mesh
-    aesop_RIBB001: THREE.Mesh
-    haylight001: THREE.Mesh
-    haylight002: THREE.Mesh
-    clock001: THREE.Mesh
-    clock003: THREE.Mesh
+    Stang_350003: THREE.Mesh
+    Stang_350003_1: THREE.Mesh
   }
   materials: {
     [key: string]: THREE.Material;
@@ -30,79 +19,23 @@ type GLTFResult = GLTF & {
 }
 
 export function Etc(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('./roomset/etc.gltf') as GLTFResult
+  const { nodes, materials } = useGLTF('./roomset/etc.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.btrolli.geometry}
-        material={materials.BtrolliBody}
+        geometry={nodes.Stang_350003.geometry}
+        material={materials.etc_Baked}
       />
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.imagetostl_mesh3002.geometry}
-        material={materials.BTrolli}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.imagetostl_mesh3001.geometry}
-        material={materials.BTrolli}
-      />
-      <mesh castShadow receiveShadow geometry={nodes.car001.geometry} material={materials.sibal} />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.shelve.geometry}
-        material={materials.balckMetal}
-      />
-      <mesh castShadow receiveShadow geometry={nodes.book001.geometry} material={materials.Book} />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.haylight.geometry}
-        material={materials.whitePlastic}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.cup.geometry}
-        material={materials['Material_0.003']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.aesop_RIBB001.geometry}
-        material={materials.Aesop}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.haylight001.geometry}
-        material={materials.Haylight}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.haylight002.geometry}
-        material={materials.haylight2}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.clock001.geometry}
-        material={materials.glass2}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.clock003.geometry}
-        material={materials['Material.045']}
+        geometry={nodes.Stang_350003_1.geometry}
+        material={materials['etc.002_Baked']}
       />
     </group>
   )
 }
 
-useGLTF.preload('/etc.gltf')
+useGLTF.preload('./roomset/etc.glb')

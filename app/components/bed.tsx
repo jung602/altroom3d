@@ -10,12 +10,7 @@ import { motion } from 'framer-motion-3d';
 
 type GLTFResult = GLTF & {
   nodes: {
-    Plane007: THREE.Mesh
-    Plane007_1: THREE.Mesh
-    Plane007_2: THREE.Mesh
-    Plane007_3: THREE.Mesh
-    Plane007_4: THREE.Mesh
-    Plane007_5: THREE.Mesh
+    bed_baked: THREE.Mesh
   }
   materials: {
     [key: string]: THREE.Material;
@@ -34,41 +29,11 @@ export function Bed(props: JSX.IntrinsicElements['group']) {
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Plane007.geometry}
-        material={materials['bed_Baked.001']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Plane007_1.geometry}
-        material={materials['tekla_fabrics_bed1_012.002_Baked']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Plane007_2.geometry}
-        material={materials['tekla_fabrics_bed1_012.003_Baked.001']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Plane007_3.geometry}
-        material={materials['Cylinder.002_Baked']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Plane007_4.geometry}
-        material={materials['bedLight_Baked.001']}
-      />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Plane007_5.geometry}
-        material={materials['Linen.012_Baked']}
+        geometry={nodes.bed_baked.geometry}
+        material={materials['bed.001_Baked']}
       />
     </group>
   )
 }
 
-useGLTF.preload('/bed.glb')
+useGLTF.preload('./roomset/bed.glb')
