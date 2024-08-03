@@ -14,17 +14,7 @@ import { Desk } from './desk';
 import { Etc } from './etc';
 import { Etc2 } from './etc2';
 
-import { useControls } from 'leva';  // Assuming you are using Leva for control
 
-
-interface ExtendedEffectComposerProps extends React.ComponentProps<typeof BaseEffectComposer> {
-  smaa?: boolean;
-}
-
-const EffectComposer: React.FC<ExtendedEffectComposerProps> = (props) => {
-  // Here you can handle the smaa prop as needed, possibly passing it to a custom effect or shader
-  return <BaseEffectComposer {...props} />;
-};
 
 
 
