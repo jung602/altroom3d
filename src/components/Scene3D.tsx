@@ -1,11 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Canvas, useLoader, useThree, useFrame } from '@react-three/fiber';
+import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import * as THREE from 'three';
 import { getAssetPath } from '../utils/path';
+import ModelGroup from './ModelGroup';
 
 // 모델 파일 경로 배열
 const MODEL_PATHS = [
@@ -33,6 +31,7 @@ const LoadingContext = React.createContext<{
 function ModelsWithScrollControls() {
   const groupRef = useRef<THREE.Group>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { gl } = useThree();
   
   // 휠 이벤트 리스너 추가
@@ -50,6 +49,10 @@ function ModelsWithScrollControls() {
       const clampedOffset = Math.max(Math.min(newOffset, maxOffset), minOffset);
       
       setScrollOffset(clampedOffset);
+      
+      // 현재 활성화된 모델 인덱스 계산
+      const newActiveIndex = Math.round(clampedOffset / 6);
+      setActiveIndex(newActiveIndex);
     };
     
     // React Fiber 캔버스의 DOM 요소에 이벤트 리스너 추가
@@ -73,52 +76,21 @@ function ModelsWithScrollControls() {
     }
   });
   
+  const { setLoaded } = React.useContext(LoadingContext);
+  
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
       {MODEL_PATHS.map((path, index) => (
-        <Model key={path} path={getAssetPath(path)} position={[0, -6 * index, 0]} />
+        <ModelGroup 
+          key={path} 
+          modelPath={path} 
+          position={[0, -6 * index, 0]} 
+          isActive={index === activeIndex}
+          onLoaded={(loadedPath) => setLoaded(loadedPath)} 
+        />
       ))}
     </group>
   );
-}
-
-// 개별 모델 컴포넌트
-function Model({ path, position }: { path: string; position: [number, number, number] }) {
-  const { gl } = useThree();
-  const { setLoaded } = React.useContext(LoadingContext);
-  
-  // GLTFLoader 설정
-  const gltf = useLoader(
-    GLTFLoader,
-    path,
-    (loader) => {
-      // DRACO Loader 설정
-      const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath(getAssetPath('/draco/'));
-      loader.setDRACOLoader(dracoLoader);
-      
-      // KTX2 Loader 설정
-      const ktx2Loader = new KTX2Loader();
-      ktx2Loader.setTranscoderPath(getAssetPath('/basis/'));
-      ktx2Loader.detectSupport(gl);
-      loader.setKTX2Loader(ktx2Loader);
-    }
-  );
-  
-  // 모델 로드 완료 시 로딩 상태 업데이트
-  useEffect(() => {
-    if (gltf) {
-      // 원래 경로를 추출 (getAssetPath 전 경로)
-      const pathParts = path.split('/');
-      const modelFileName = pathParts[pathParts.length - 1];
-      
-      // 원래 MODEL_PATHS의 형식으로 변환
-      const originalPath = `/models/${modelFileName}`;
-      setLoaded(originalPath);
-    }
-  }, [gltf, path, setLoaded]);
-  
-  return gltf ? <primitive object={gltf.scene} scale={.8} position={position} /> : null;
 }
 
 // 메인 Scene 컴포넌트
