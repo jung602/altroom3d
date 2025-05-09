@@ -7,6 +7,8 @@ import * as THREE from 'three';
 import { scenesData } from '../../../data/scenes';
 import { SceneConfig } from '../../../types/scene';
 import { Reflector } from './Reflector';
+import { useModelScale } from '../../hooks/useModelScale';
+import { useSpring, animated } from '@react-spring/three';
 
 // scenesData를 기반으로 모델 정보 생성
 export const MODEL_DATA = scenesData.map(scene => ({
@@ -22,9 +24,13 @@ interface ModelGroupProps {
   onLoaded: (path: string) => void;
 }
 
+// animated.group 타입 정의
+const AnimatedGroup = animated('group');
+
 const ModelGroup: React.FC<ModelGroupProps> = ({ modelPath, sceneId, position, isActive, onLoaded }) => {
   const { gl } = useThree();
   const groupRef = useRef<THREE.Group>(null);
+  const modelScaler = useModelScale();
   
   // 씬 데이터에서 현재 모델에 해당하는 설정 찾기
   const sceneConfig = scenesData.find((scene: SceneConfig) => scene.id === sceneId);
@@ -64,15 +70,22 @@ const ModelGroup: React.FC<ModelGroupProps> = ({ modelPath, sceneId, position, i
   
   const modelConfig = sceneConfig.model;
   
+  // 화면 크기에 따른 모델 스케일 및 위치 조정
+  const adjustedScale = modelScaler.getModelScale(modelConfig.scale);
+  const adjustedPosition = modelScaler.adjustModelPosition(modelConfig.position);
+  
+  // 스프링 애니메이션 값 추출
+  const { scale } = modelScaler.springProps;
+  
   return (
     <group 
       position={position}
       ref={groupRef}
     >
       {/* 모델과 리플렉터를 함께 그룹화 */}
-      <group
-        scale={modelConfig.scale}
-        position={modelConfig.position}
+      <AnimatedGroup
+        scale={scale.to(s => modelConfig.scale * s)}  // 스프링 애니메이션 적용
+        position={[adjustedPosition[0], adjustedPosition[1], adjustedPosition[2]]}
         rotation={new THREE.Euler(
           modelConfig.rotation[0],
           modelConfig.rotation[1],
@@ -84,7 +97,7 @@ const ModelGroup: React.FC<ModelGroupProps> = ({ modelPath, sceneId, position, i
         
         {/* 리플렉터 렌더링 */}
         <Reflector config={sceneConfig.reflector} isCurrentModel={isActive} />
-      </group>
+      </AnimatedGroup>
     </group>
   );
 };

@@ -4,6 +4,7 @@ import * as THREE from 'three'
 import { Reflector as ThreeReflector } from 'three/examples/jsm/objects/Reflector.js'
 import { SceneConfig } from '../../../types/scene';
 import { FrontSide, Group, Mesh, Material } from 'three';
+// import { use3DResponsive } from '../../hooks/use3DResponsive';
 
 interface ReflectorProps {
   config: SceneConfig['reflector'];
@@ -42,6 +43,7 @@ extend({ ThreeReflector });
 
 export const Reflector: React.FC<ReflectorProps> = ({ config, isCurrentModel = true }) => {
   const groupRef = useRef<Group>(null);
+  // const responsive = use3DResponsive();
   const [isMobile, setIsMobile] = useState(false);
   
   // 컴포넌트 마운트 시 모바일 감지

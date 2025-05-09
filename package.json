@@ -13,9 +13,12 @@
     "deploy": "GITHUB_PAGES=true next build && next export && touch out/.nojekyll"
   },
   "dependencies": {
+    "@react-spring/three": "^9.7.5",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
+    "@types/lodash": "^4.17.16",
     "framer-motion": "^12.10.4",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.508.0",
     "next": "15.3.2",
     "react": "^19.0.0",
