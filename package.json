@@ -5,11 +5,12 @@
   "homepage": "https://jung602.github.io/altroom3d/",
   "scripts": {
     "dev": "next dev",
-    "build": "NEXT_PUBLIC_BASE_PATH=/altroom3d next build",
+    "build": "next build",
+    "build:github": "GITHUB_PAGES=true next build",
     "start": "next start",
     "lint": "next lint",
     "export": "next export",
-    "deploy": "NEXT_PUBLIC_BASE_PATH=/altroom3d npm run build && touch out/.nojekyll && echo 'jung602.github.io' > out/CNAME"
+    "deploy": "GITHUB_PAGES=true next build && next export && touch out/.nojekyll"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.7",

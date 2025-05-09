@@ -5,21 +5,19 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import * as THREE from 'three';
-
-// 베이스 경로 설정
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+import { getAssetPath } from '../utils/path';
 
 // 모델 파일 경로 배열
 const MODEL_PATHS = [
-  `${basePath}/models/compressed_alt1.glb`,
-  `${basePath}/models/compressed_alt2.glb`,
-  `${basePath}/models/compressed_alt3.glb`,
-  `${basePath}/models/compressed_alt4.glb`,
-  `${basePath}/models/compressed_alt5.glb`,
-  `${basePath}/models/compressed_alt6.glb`,
-  `${basePath}/models/compressed_alt7.glb`,
-  `${basePath}/models/compressed_alt8.glb`,
-  `${basePath}/models/compressed_alt9.glb`,
+  '/models/compressed_alt1.glb',
+  '/models/compressed_alt2.glb',
+  '/models/compressed_alt3.glb',
+  '/models/compressed_alt4.glb',
+  '/models/compressed_alt5.glb',
+  '/models/compressed_alt6.glb',
+  '/models/compressed_alt7.glb',
+  '/models/compressed_alt8.glb',
+  '/models/compressed_alt9.glb',
 ];
 
 // 로딩 관리를 위한 컨텍스트
@@ -52,7 +50,6 @@ function ModelsWithScrollControls() {
       const clampedOffset = Math.max(Math.min(newOffset, maxOffset), minOffset);
       
       setScrollOffset(clampedOffset);
-      console.log(`휠 이벤트: deltaY=${event.deltaY}, 오프셋=${clampedOffset}`);
     };
     
     // React Fiber 캔버스의 DOM 요소에 이벤트 리스너 추가
@@ -79,7 +76,7 @@ function ModelsWithScrollControls() {
   return (
     <group ref={groupRef} position={[0, 0, 0]}>
       {MODEL_PATHS.map((path, index) => (
-        <Model key={path} path={path} position={[0, -6 * index, 0]} />
+        <Model key={path} path={getAssetPath(path)} position={[0, -6 * index, 0]} />
       ))}
     </group>
   );
@@ -97,12 +94,12 @@ function Model({ path, position }: { path: string; position: [number, number, nu
     (loader) => {
       // DRACO Loader 설정
       const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath(`${basePath}/draco/`);
+      dracoLoader.setDecoderPath(getAssetPath('/draco/'));
       loader.setDRACOLoader(dracoLoader);
       
       // KTX2 Loader 설정
       const ktx2Loader = new KTX2Loader();
-      ktx2Loader.setTranscoderPath(`${basePath}/basis/`);
+      ktx2Loader.setTranscoderPath(getAssetPath('/basis/'));
       ktx2Loader.detectSupport(gl);
       loader.setKTX2Loader(ktx2Loader);
     }
@@ -111,7 +108,13 @@ function Model({ path, position }: { path: string; position: [number, number, nu
   // 모델 로드 완료 시 로딩 상태 업데이트
   useEffect(() => {
     if (gltf) {
-      setLoaded(path);
+      // 원래 경로를 추출 (getAssetPath 전 경로)
+      const pathParts = path.split('/');
+      const modelFileName = pathParts[pathParts.length - 1];
+      
+      // 원래 MODEL_PATHS의 형식으로 변환
+      const originalPath = `/models/${modelFileName}`;
+      setLoaded(originalPath);
     }
   }, [gltf, path, setLoaded]);
   
@@ -126,6 +129,17 @@ interface Scene3DProps {
 
 const Scene3D: React.FC<Scene3DProps> = ({ onLoadingComplete, onLoadingProgress }) => {
   const [loadedModels, setLoadedModels] = useState<Set<string>>(new Set());
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // 클라이언트 사이드에서만 마운트 설정
+  useEffect(() => {
+    setIsMounted(true);
+    
+    // 로그로 현재 사용 중인 basePath와 URL 정보 출력
+    console.log('현재 basePath:', getAssetPath(''));
+    console.log('현재 URL:', typeof window !== 'undefined' ? window.location.href : '서버 사이드');
+    console.log('예시 에셋 경로:', getAssetPath('/models/compressed_alt1.glb'));
+  }, []);
   
   const setLoaded = useCallback((path: string) => {
     setLoadedModels(prev => {
@@ -147,6 +161,9 @@ const Scene3D: React.FC<Scene3DProps> = ({ onLoadingComplete, onLoadingProgress 
       onLoadingComplete();
     }
   }, [loadedModels.size, onLoadingComplete, onLoadingProgress]);
+  
+  // 클라이언트 사이드에서만 렌더링
+  if (!isMounted) return null;
   
   return (
     <div className="w-full h-screen">
