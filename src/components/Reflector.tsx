@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from 'react'
-import { useThree, extend } from '@react-three/fiber'
+import { extend } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Reflector as ThreeReflector } from 'three/examples/jsm/objects/Reflector.js'
 import { SceneConfig } from '../../types/scene';
-import { FrontSide, Shape, Group, Mesh, Material } from 'three';
+import { FrontSide, Group, Mesh, Material } from 'three';
 
 interface ReflectorProps {
   config: SceneConfig['reflector'];
