@@ -18,7 +18,8 @@ const nextConfig: NextConfig = {
   },
   // 환경 변수를 클라이언트 측에서도 사용 가능하게 설정
   env: {
-    NEXT_PUBLIC_BASE_URL: basePath
+    NEXT_PUBLIC_BASE_URL: basePath,
+    NEXT_PUBLIC_BASE_PATH: basePath
   }
 };
 

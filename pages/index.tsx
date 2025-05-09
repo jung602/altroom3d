@@ -2,7 +2,6 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { Nav } from '../src/components/ui/Nav';
 import { useLoading } from './_app';
-import { getAssetPath } from '../src/utils/path';
 
 const Scene3D = dynamic(() => import('../src/components/3d/Scene3D'), {
   ssr: false,
@@ -20,7 +19,7 @@ export default function Home() {
     <main className="min-h-screen w-full fixed inset-0 flex flex-col items-center justify-center bg-black overflow-hidden relative">
       <div className='fixed top-3 left-3 mix-blend-difference text-slate-50 text-sm font-geist-sans z-[10000]'>
         <Image
-          src={getAssetPath('/logowhite.png')}
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH || './'}logowhite.png`}
           alt="Logo"
           width={54}
           height={54}

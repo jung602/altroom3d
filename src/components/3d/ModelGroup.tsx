@@ -4,7 +4,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import * as THREE from 'three';
-import { getAssetPath } from '../../utils/path';
 import { scenesData } from '../../../data/scenes';
 import { SceneConfig } from '../../../types/scene';
 import { Reflector } from './Reflector';
@@ -30,19 +29,24 @@ const ModelGroup: React.FC<ModelGroupProps> = ({ modelPath, sceneId, position, i
   // 씬 데이터에서 현재 모델에 해당하는 설정 찾기
   const sceneConfig = scenesData.find((scene: SceneConfig) => scene.id === sceneId);
   
+  // 경로 생성 함수
+  const getPath = (path: string) => {
+    return `${process.env.NEXT_PUBLIC_BASE_PATH || './'}${path.startsWith('/') ? path.substring(1) : path}`;
+  };
+  
   // GLTFLoader 설정
   const gltf = useLoader(
     GLTFLoader,
-    getAssetPath(modelPath),
+    getPath(modelPath),
     (loader) => {
       // DRACO Loader 설정
       const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath(getAssetPath('/draco/'));
+      dracoLoader.setDecoderPath(getPath('draco/'));
       loader.setDRACOLoader(dracoLoader);
       
       // KTX2 Loader 설정
       const ktx2Loader = new KTX2Loader();
-      ktx2Loader.setTranscoderPath(getAssetPath('/basis/'));
+      ktx2Loader.setTranscoderPath(getPath('basis/'));
       ktx2Loader.detectSupport(gl);
       loader.setKTX2Loader(ktx2Loader);
     }
