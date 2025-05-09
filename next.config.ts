@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   basePath: basePath,
   assetPrefix: basePath,
+  images: {
+    unoptimized: true,
+  },
   publicRuntimeConfig: {
     basePath: basePath
   },
