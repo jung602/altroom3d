@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useSpring, useTransform, useMotionValue } from 'framer-motion';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 interface LoadingScreenProps {
   isLoading: boolean;

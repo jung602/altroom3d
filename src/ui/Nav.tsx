@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import Info from './Info';
 
-interface NavProps {}
+// 빈 객체 타입 대신 type으로 선언
+type NavProps = Record<string, never>;
 
-export const Nav = ({}: NavProps) => {
+export const Nav: React.FC<NavProps> = () => {
   const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   return (
