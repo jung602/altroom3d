@@ -2,13 +2,14 @@
   "name": "alt3d",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://jung602.github.io/altroom3d/",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NEXT_PUBLIC_BASE_PATH=/altroom3d next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next build && next export",
-    "deploy": "next build && touch out/.nojekyll && git add out/ && git commit -m \"Deploy to gh-pages\" && git subtree push --prefix out origin gh-pages"
+    "export": "next export",
+    "deploy": "NEXT_PUBLIC_BASE_PATH=/altroom3d npm run build && touch out/.nojekyll && echo 'jung602.github.io' > out/CNAME"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.7",
