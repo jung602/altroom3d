@@ -19,7 +19,7 @@ export default function Home() {
     <main className="min-h-screen w-full fixed inset-0 flex flex-col items-center justify-center bg-black overflow-hidden relative">
       <div className='fixed top-3 left-3 mix-blend-difference text-slate-50 text-sm font-geist-sans z-[10000]'>
         <Image
-          src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/logowhite.png`}
+          src={`${process.env.NEXT_PUBLIC_BASE_URL || ''}/logowhite.png`}
           alt="Logo"
           width={54}
           height={54}
