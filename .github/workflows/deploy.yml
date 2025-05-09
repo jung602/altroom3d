@@ -28,11 +28,16 @@ jobs:
         
       - name: Build with Next.js
         run: npm run build
+
+      - name: Copy static files
+        run: |
+          mkdir -p ./.next/static
+          cp -r ./public/* ./.next/static/
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./.next/
+          path: ./.next
 
   deploy:
     environment:

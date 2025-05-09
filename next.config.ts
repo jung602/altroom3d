@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const isProduction = process.env.NODE_ENV === 'production';
-const repoName = 'alt3d'; // GitHub 리포지토리 이름 (필요시 변경)
+const repoName = 'altroom3d'; // GitHub 리포지토리 이름을 altroom3d로 변경
 
 const nextConfig: NextConfig = {
   /* config options here */
