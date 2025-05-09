@@ -6,17 +6,20 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import * as THREE from 'three';
 
+// 베이스 경로
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 // 모델 파일 경로 배열
 const MODEL_PATHS = [
-  '/models/compressed_alt1.glb',
-  '/models/compressed_alt2.glb',
-  '/models/compressed_alt3.glb',
-  '/models/compressed_alt4.glb',
-  '/models/compressed_alt5.glb',
-  '/models/compressed_alt6.glb',
-  '/models/compressed_alt7.glb',
-  '/models/compressed_alt8.glb',
-  '/models/compressed_alt9.glb',
+  `${BASE_PATH}/models/compressed_alt1.glb`,
+  `${BASE_PATH}/models/compressed_alt2.glb`,
+  `${BASE_PATH}/models/compressed_alt3.glb`,
+  `${BASE_PATH}/models/compressed_alt4.glb`,
+  `${BASE_PATH}/models/compressed_alt5.glb`,
+  `${BASE_PATH}/models/compressed_alt6.glb`,
+  `${BASE_PATH}/models/compressed_alt7.glb`,
+  `${BASE_PATH}/models/compressed_alt8.glb`,
+  `${BASE_PATH}/models/compressed_alt9.glb`,
 ];
 
 // 로딩 관리를 위한 컨텍스트
@@ -94,12 +97,12 @@ function Model({ path, position }: { path: string; position: [number, number, nu
     (loader) => {
       // DRACO Loader 설정
       const dracoLoader = new DRACOLoader();
-      dracoLoader.setDecoderPath('/draco/');
+      dracoLoader.setDecoderPath(`${BASE_PATH}/draco/`);
       loader.setDRACOLoader(dracoLoader);
       
       // KTX2 Loader 설정
       const ktx2Loader = new KTX2Loader();
-      ktx2Loader.setTranscoderPath('/basis/');
+      ktx2Loader.setTranscoderPath(`${BASE_PATH}/basis/`);
       ktx2Loader.detectSupport(gl);
       loader.setKTX2Loader(ktx2Loader);
     }
