@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useState, useEffect } from "react";
-import LoadingScreen from "@/src/ui/LoadingScreen";
+import LoadingScreen from "@/src/components/ui/LoadingScreen";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isLoading, setIsLoading] = useState(true);

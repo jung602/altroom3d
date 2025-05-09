@@ -4,27 +4,31 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import * as THREE from 'three';
-import { getAssetPath } from '../utils/path';
-import { scenesData } from '../../data/scenes';
-import { SceneConfig } from '../../types/scene';
+import { getAssetPath } from '../../utils/path';
+import { scenesData } from '../../../data/scenes';
+import { SceneConfig } from '../../../types/scene';
 import { Reflector } from './Reflector';
+
+// scenesData를 기반으로 모델 정보 생성
+export const MODEL_DATA = scenesData.map(scene => ({
+  id: scene.id,
+  path: `/models/compressed_alt${scene.id}.glb`
+}));
 
 interface ModelGroupProps {
   modelPath: string;
+  sceneId: string;
   position: [number, number, number];
   isActive: boolean;
   onLoaded: (path: string) => void;
 }
 
-const ModelGroup: React.FC<ModelGroupProps> = ({ modelPath, position, isActive, onLoaded }) => {
+const ModelGroup: React.FC<ModelGroupProps> = ({ modelPath, sceneId, position, isActive, onLoaded }) => {
   const { gl } = useThree();
   const groupRef = useRef<THREE.Group>(null);
   
-  // 파일 이름에서 모델 ID 추출 (예: compressed_alt1.glb -> 1)
-  const modelId = modelPath.match(/compressed_alt(\d+)\.glb$/)?.[1];
-  
   // 씬 데이터에서 현재 모델에 해당하는 설정 찾기
-  const sceneConfig = scenesData.find((scene: SceneConfig) => scene.id === modelId);
+  const sceneConfig = scenesData.find((scene: SceneConfig) => scene.id === sceneId);
   
   // GLTFLoader 설정
   const gltf = useLoader(
