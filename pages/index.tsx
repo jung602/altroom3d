@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { Nav } from '../src/components/ui/Nav';
-import { useEffect } from 'react';
 import { useLoading } from './_app';
 
 const Scene3D = dynamic(() => import('../src/components/3d/Scene3D'), {
