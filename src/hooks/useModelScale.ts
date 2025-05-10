@@ -41,15 +41,15 @@ export function useModelScale() {
   const calculateScaleFactor = useCallback((): number => {
     // useResponsiveDevice.ts의 스케일 로직 참고
     if (viewportWidth > 1440) {
-      return 1.2;      // 데스크탑 큰 화면
+      return 0.9;      // 데스크탑 큰 화면 (1.2의 75%)
     } else if (viewportWidth > 1024) {
-      return 1.05;     // 데스크탑
+      return 0.79;     // 데스크탑 (1.05의 75%)
     } else if (viewportWidth > 768) {
-      return 0.9;      // 태블릿
+      return 0.675;    // 태블릿 (0.9의 75%)
     } else if (viewportWidth > 480) {
-      return 0.8;      // 큰 모바일
+      return 0.6;      // 큰 모바일 (0.8의 75%)
     } else {
-      return 0.7;      // 작은 모바일
+      return 0.525;    // 작은 모바일 (0.7의 75%)
     }
   }, [viewportWidth]);
 
@@ -63,17 +63,27 @@ export function useModelScale() {
   }, [viewportWidth]);
 
   // 스프링 애니메이션 설정
-  const [springProps, api] = useSpring(() => ({
-    scale: 1.0,
-    yOffset: 0,
-    config: {
-      mass: 1,
-      tension: 280,
-      friction: 60,
-      precision: 0.001
-    },
-    immediate: true // 첫 로드 시 즉시 적용
-  }));
+  const [springProps, api] = useSpring(() => {
+    // 초기 스케일값과 오프셋 계산
+    const initialScale = calculateScaleFactor();
+    const initialYOffset = calculatePositionYOffset();
+    
+    // 초기값 저장
+    prevScaleRef.current = initialScale;
+    prevOffsetRef.current = initialYOffset;
+    
+    return {
+      scale: initialScale,
+      yOffset: initialYOffset,
+      config: {
+        mass: 1,
+        tension: 280,
+        friction: 60,
+        precision: 0.001
+      },
+      immediate: true // 첫 로드 시 즉시 적용
+    };
+  });
 
   // 뷰포트 크기가 변경될 때 스프링 애니메이션 업데이트
   useEffect(() => {

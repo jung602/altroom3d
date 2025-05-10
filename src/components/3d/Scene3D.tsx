@@ -85,11 +85,11 @@ const Scene3D: React.FC<Scene3DProps> = ({ onLoadingComplete, onLoadingProgress 
         <Canvas
           shadows
           camera={{ 
-            position: [5 * 29, 6.5 * 29, -10 * 29], 
-            fov: 1, 
-            far: 1000, 
-            near: 100, 
-            zoom: 1 
+            position: [5 * 250, 6.5 * 250, -10 * 250], 
+            fov: .1, 
+            far: 10000, 
+            near: 3000, 
+            zoom: 1
           }}
           onCreated={({ gl }) => {
             gl.toneMapping = THREE.ACESFilmicToneMapping;
